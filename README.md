@@ -1,2 +1,3 @@
-# internet-of-things
-personal iot project
+# my-home-network
+
+personal project
