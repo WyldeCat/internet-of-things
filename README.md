@@ -1,3 +1,3 @@
 # my-home-network
 
-personal project
+my personal project with Raspberry pi and Arduino
