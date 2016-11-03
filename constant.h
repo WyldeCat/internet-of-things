@@ -1,6 +1,10 @@
 /* controllable-device type */
 #define POWER_CONTROL 0
 
+/* command menu */
+#define POWER_ON 10
+#define POWER_OFF 11
+
 /* checkable-device type */
 #define TRIGGER_ABLE 100
 #define NORMAL 101
