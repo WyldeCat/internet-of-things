@@ -1,3 +1,7 @@
+#ifndef _CONSTANT_H_
+#define _CONSTANT_H_
+
+
 /* controllable-device type */
 #define POWER_CONTROL 0
 
@@ -19,3 +23,5 @@
 #define CON_DEV_NUM 10
 #define CHK_DEV_NUM 10
 #define RULE_NUM 10
+
+#endif

@@ -1,6 +1,9 @@
+#ifndef _DEVICE_H_
+#define _DEVICE_H_
+
 #include "constant.h"
 
-/* for checkable device */
+/*********** for checkable device ***************/
 struct checkable_device 
 {
 	char label[10];
@@ -18,7 +21,7 @@ double get_checked_trigger(checkable_device *dev);
 void clear_checked_trigger(checkable_device *dev);
 
 
-/* for controllable_device */
+/************ for controllable_device *************/
 struct controllable_device
 {
 	char label[10];
@@ -28,3 +31,5 @@ struct controllable_device
 
 controllable_device *create_controllable(int type,char *_label);
 void control(controllable_device *dev,int command);
+
+#endif

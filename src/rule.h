@@ -1,5 +1,8 @@
-#define "device.h"
-#define "constant.h"
+#ifndef _RULE_H_
+#define _RULE_H_
+
+#include "device.h"
+#include "constant.h"
 
 struct rule 
 {
@@ -13,3 +16,5 @@ struct rule
 
 rule *create_rule(int type,int command,int hour,int minute,double threshold);
 bool check_rule(rule *r);
+
+#endif
