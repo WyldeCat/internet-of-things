@@ -13,6 +13,7 @@ controllable_device (*con_devs)[CON_DEV_NUM];
 rule (*rules)[RULE_NUM];
 
 int init();
+int readn(int fd, char* buf, int len);
 
 int main( )
 {
@@ -55,7 +56,7 @@ int init()
 
 	struct sockaddr_in saddr;
 	saddr.sin_family = AF_INET;
-	saddr.sin_port = htons(4000);
+	saddr.sin_port = htons(4001);
 	saddr.sin_addr.s_addr = INADDR_ANY;
 
 	int option = true; // check
@@ -92,10 +93,12 @@ int init()
 		printf("Client %s connected..\n",client_ip);
 
 		int n = 0;
-		char buf;
+		char buf[1024]={0,};
+		short tmp;
 		while (true)
 		{
-			n = read(csock,&buf, sizeof buf);
+			short len=0;
+			n = readn(csock,(char*)&len,sizeof len);
 			if (n == 0) 
 			{
 			    printf("end!\n");
@@ -106,9 +109,42 @@ int init()
 				perror("read()");
 				break;
 			}
-			putchar(buf);
+			printf("%d\n",len);
+			n = readn(csock,buf,len);
+			if (n == 0)
+			{
+				printf("end!\n");
+				break;
+			}
+			else if (n == -1)
+			{
+				perror("read()");
+				break;
+			}
+			printf("%s",buf);
+			fflush(stdin);
 		}
 		close(csock);
 	}
 	close(ssock);
+}
+
+int readn(int fd,char* buf,int len)
+{
+	int n;
+	int ret;
+
+	n = len;
+	while(n > 0)
+	{
+		ret = read(fd,buf,len);
+		if (ret < 0)
+		    return -1;
+		if (ret == 0) // when fd's buffer is empty.
+		    return len - n; //  
+
+		buf += ret;
+		n -= ret;
+	}
+	return len;
 }
