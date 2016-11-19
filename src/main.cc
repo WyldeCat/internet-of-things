@@ -90,6 +90,24 @@ int init()
 
 		char* client_ip = inet_ntoa(caddr.sin_addr);
 		printf("Client %s connected..\n",client_ip);
+
+		int n = 0;
+		char buf;
+		while (true)
+		{
+			n = read(csock,&buf, sizeof buf);
+			if (n == 0) 
+			{
+			    printf("end!\n");
+				break;
+			}
+			else if (n == -1)
+			{
+				perror("read()");
+				break;
+			}
+			putchar(buf);
+		}
 		close(csock);
 	}
 	close(ssock);
