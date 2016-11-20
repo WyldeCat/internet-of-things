@@ -94,9 +94,17 @@ int init()
 
 		int n = 0;
 		char buf[1024]={0,};
-		short tmp;
+		char temp;
+		int tmp=0;
 		while (true)
 		{
+			tmp++;
+			//scanf("%d",&tmp);
+			temp='0'+(tmp%10);
+			write(csock,&temp,1);
+			printf("%d sended.\n",tmp);
+			sleep(1);
+			/*
 			short len=0;
 			n = readn(csock,(char*)&len,sizeof len);
 			if (n == 0) 
@@ -123,6 +131,7 @@ int init()
 			}
 			printf("%s",buf);
 			fflush(stdin);
+			*/
 		}
 		close(csock);
 	}
