@@ -35,7 +35,7 @@ void *accept_dev(void *data)
 	if(ssock == -1)
 	{
 		perror("socket()");
-		exit(-1);
+		exit(1);
 	}
 
 	struct sockaddr_in saddr;
@@ -51,14 +51,14 @@ void *accept_dev(void *data)
 	if(ret == -1)
 	{
 		perror("bind()");
-		exit(-1);
+		exit(1);
 	}
 
 	ret = listen(ssock,5);
 	if(ret == -1)
 	{
 		perror("listen()");
-		exit(-1);
+		exit(1);
 	}
 
 	while(true)
@@ -70,7 +70,7 @@ void *accept_dev(void *data)
 		if(csock == -1)
 		{
 			perror("accept()");
-			exit(-1);
+			exit(1);
 		}
 
 		char* client_ip = inet_ntoa(caddr.sin_addr);
@@ -88,7 +88,7 @@ void *accept_dev(void *data)
 		n = readn(csock,buf,len);
 		if(n <= 0)
 		{
-			exit(-1);
+			exit(1);
 		}
 		if(info[0]==CHECKING)
 		{
