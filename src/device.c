@@ -6,16 +6,10 @@ struct check_device *create_check(int _type,double _se,double _ee,char *_label)
 	return NULL;
 }
 
-void start_checking(struct check_device *dev)
+void *listen_dev(void *data)
 {
-	// Not implemented.
+	// NOT implemented.
 }
-
-void stop_checking(struct check_device *dev)
-{
-	// Not implemented.
-}
-
 double get_checked_val(struct check_device *dev)
 {
 	// Not implemented.

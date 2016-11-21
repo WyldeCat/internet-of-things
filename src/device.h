@@ -11,8 +11,8 @@
 
 struct check_device 
 {
-	char label[10];
-	int trigger,type;
+	char label[32];
+	int type,trigger;
 	double val,se,ee;
 };
 
@@ -28,7 +28,7 @@ void clear_trigger(struct check_device *dev);
 
 struct control_device
 {
-	char label[10];
+	char label[32];
 	int status;
 	int type;
 };

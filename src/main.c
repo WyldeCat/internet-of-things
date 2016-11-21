@@ -19,11 +19,12 @@ int readn(int fd,char *buf,int len);
 
 int main( )
 {
-	int i,j;
+	int i,j,ret;
 
 	pthread_t thread_listen;
 	pthread_create(&thread_listen,NULL,accept_dev,NULL);
 
+	pthread_join(thread_listen,(void **)&ret);
 	return 0;
 }
 
@@ -99,5 +100,27 @@ void *accept_dev(void *data)
 		else 
 		{
 		}
+	}
+}
+
+int readn(int fd,char* buf,int len)
+{
+	int n;
+	int ret;
+
+	n = len;
+	while(n>0)
+	{
+		ret = read(fd,buf,len);
+		if(ret < 0)
+		{
+			return -1;
+		}
+		if(ret == 0)
+		{
+			return len-n;
+		}
+		buf += ret;
+		n -= ret;
 	}
 }
