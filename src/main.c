@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "constant.h"
 #include "rule.h"
@@ -14,7 +15,7 @@ struct control_device *con_devs[CON_DEV_NUM];
 struct rule *rules[RULE_NUM];
 
 void *accept_dev(void *data);
-int chk_cnt;
+int chk_cnt,con_cnt;
 int readn(int fd,char *buf,int len);
 
 int main( )
@@ -77,7 +78,7 @@ void *accept_dev(void *data)
 		char* client_ip = inet_ntoa(caddr.sin_addr);
 		printf("Client %s connected..\n",client_ip);
 
-		int n = 0;
+		int n = 0,tmp = 0;
 		short len,info[4];
 		char buf[32]={0,};
 		
@@ -91,14 +92,22 @@ void *accept_dev(void *data)
 		{
 			exit(1);
 		}
-		if(info[0]==CHECKING)
+		if(info[0]==CHECK && chk_cnt<CHK_DEV_NUM)
 		{
-			chk_devs[chk_cnt]=create_check(info[1],info[2],info[3],buf);
-			pthread_create(&chk_thread[chk_cnt],NULL,listen_dev,NULL);
+			chk_devs[chk_cnt]=create_check(info[1],info[2],info[3],csock,buf);
+			tmp=chk_cnt;
+			pthread_create(&chk_thread[chk_cnt],NULL,listen_dev,(void*)tmp);
 			chk_cnt++;
+		}
+		else if(info[1]==CONTROL && con_cnt<CON_DEV_NUM)
+		{
+			con_devs[con_cnt]=create_control(csock,buf);
+			con_cnt++;
 		}
 		else 
 		{
+			printf("type error!\n");
+			exit(1);
 		}
 	}
 }

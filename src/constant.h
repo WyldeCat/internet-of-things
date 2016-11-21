@@ -4,8 +4,8 @@
 typedef enum { false,true } bool;
 
 /* controllable-device type */
-#define POWER_CONTROL 0
-#define CHECKING	1
+#define CONTROL 0
+#define CHECK	1
 
 /* command menu */
 #define POWER_ON 10
