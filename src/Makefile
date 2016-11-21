@@ -1,2 +1,4 @@
-all: main.cc
-	g++ main.cc
+all: run
+
+run: main.c
+	gcc main.c -lpthread
