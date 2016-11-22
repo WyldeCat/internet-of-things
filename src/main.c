@@ -162,7 +162,7 @@ int readn(int fd,char* buf,int len)
 
 void load_sample_rule()
 {
-	rules[0]=create_rule(INTERACTIVE_RULE,MORE_THAN,COMMAND_ON,0,0,5.0,con_devs[0],chk_devs[0]);
-	rules[1]=create_rule(INTERACTIVE_RULE,LESS_THAN,COMMAND_OFF,0,0,5.0,con_devs[0],chk_devs[0]);
+	rules[0]=create_rule(SIMPLE_RULE,MORE_THAN,COMMAND_ON,0,0,5.0,con_devs[0],chk_devs[0]);
+	rules[1]=create_rule(SIMPLE_RULE,LESS_THAN,COMMAND_OFF,0,0,5.0,con_devs[0],chk_devs[0]);
 	rule_cnt=2;
 }

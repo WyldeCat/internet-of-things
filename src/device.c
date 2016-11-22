@@ -42,11 +42,6 @@ void *listen_dev(void *data)
 	//close(csock);
 }
 
-double get_checked_val(struct check_device *dev)
-{
-	// Not implemented.
-}
-
 int get_checked_trigger(struct check_device *dev)
 {
 	// Not implemented.

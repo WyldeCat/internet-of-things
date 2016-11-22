@@ -18,7 +18,7 @@ struct check_device
 
 struct check_device *create_check(int _type,float _se,int _csock,char *_label);
 void *listen_dev(void *data); // index
-double get_val(struct check_device *dev);
+
 int get_trigger(struct check_device *dev);
 void clear_trigger(struct check_device *dev);
 

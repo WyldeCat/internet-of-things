@@ -18,7 +18,7 @@ struct rule *create_rule(int _type,int _type2,int _command,int _hour,int _minute
 
 bool check_rule(struct rule *r)
 {
-	if(r->type == INTERACTIVE_RULE)
+	if(r->type == SIMPLE_RULE)
 	{
 		bool ismore=(r->type2 == MORE_THAN);
 		if(r->chk_dev->val >= r->threshold) return ismore;
@@ -28,8 +28,8 @@ bool check_rule(struct rule *r)
 	{
 		if(r->chk_dev->trigger==1)
 		{
-			return true;
 			r->chk_dev->trigger=0;
+			return true;
 		}
 		return false;
 	}
