@@ -15,8 +15,9 @@ struct control_device *con_devs[CON_DEV_NUM];
 struct rule *rules[RULE_NUM];
 
 void *accept_dev(void *data);
-int chk_cnt,con_cnt;
+void load_test_rule(); // test
 int readn(int fd,char *buf,int len);
+int chk_cnt,con_cnt,rule_cnt;
 
 int main( )
 {
@@ -76,7 +77,6 @@ void *accept_dev(void *data)
 		}
 
 		char* client_ip = inet_ntoa(caddr.sin_addr);
-		printf("Client %s connected..\n",client_ip);
 
 		int n = 0,tmp = 0;
 		short len,info[4];
@@ -98,11 +98,17 @@ void *accept_dev(void *data)
 			tmp=chk_cnt;
 			pthread_create(&chk_thread[chk_cnt],NULL,listen_dev,(void*)tmp);
 			chk_cnt++;
+
+			printf("chk dev accepted!\n");
+			fflush(stdout);
 		}
 		else if(info[1]==CONTROL && con_cnt<CON_DEV_NUM)
 		{
 			con_devs[con_cnt]=create_control(csock,buf);
 			con_cnt++;
+
+			printf("con dev accepted!\n");
+			fflush(stdout);
 		}
 		else 
 		{
@@ -132,4 +138,9 @@ int readn(int fd,char* buf,int len)
 		buf += ret;
 		n -= ret;
 	}
+}
+
+void load_test_rule()
+{
+
 }

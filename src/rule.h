@@ -16,7 +16,7 @@ struct rule
 	double threshold;
 };
 
-struct rule *create_rule(int type,int command,int hour,int minute,double threshold);
+struct rule *create_rule(int type,int command,int hour,int minute,double threshold,struct control_device *_con_dev,struct check_device *_chk_dev);
 bool check_rule(struct rule *r);
 
 #endif

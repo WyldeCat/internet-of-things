@@ -18,7 +18,7 @@ typedef enum { false,true } bool;
 /* rule type */
 #define TIME_RULE 1000
 #define TRIGGER_RULE 1001
-#define COMMUNICATION_RULE 1002
+#define INTERACTIVE_RULE 1002
 
 
 /* NUM */
