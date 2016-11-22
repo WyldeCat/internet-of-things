@@ -13,10 +13,10 @@ struct check_device
 {
 	char *label;
 	int type,trigger,csock;
-	double val,se,ee;
+	float val,se;
 };
 
-struct check_device *create_check(int _type,double _se,double _ee,int _csock,char *_label);
+struct check_device *create_check(int _type,float _se,int _csock,char *_label);
 void *listen_dev(void *data); // index
 double get_val(struct check_device *dev);
 int get_trigger(struct check_device *dev);

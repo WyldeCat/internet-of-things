@@ -15,6 +15,7 @@ struct control_device *con_devs[CON_DEV_NUM];
 struct rule *rules[RULE_NUM];
 
 void *accept_dev(void *data);
+
 void load_test_rule(); // test
 int readn(int fd,char *buf,int len);
 int chk_cnt,con_cnt,rule_cnt;
@@ -25,7 +26,7 @@ int main( )
 
 	pthread_t thread_listen;
 	pthread_create(&thread_listen,NULL,accept_dev,NULL);
-
+	
 	pthread_join(thread_listen,(void **)&ret);
 	return 0;
 }
@@ -68,7 +69,8 @@ void *accept_dev(void *data)
 	{
 		struct sockaddr_in caddr;
 		socklen_t size = sizeof(caddr);
-
+		printf("accepting thread: Waiting...\n");
+		fflush(stdout);
 		int csock = accept(ssock,(struct sockaddr*)&caddr, &size);
 		if(csock == -1)
 		{
@@ -77,38 +79,36 @@ void *accept_dev(void *data)
 		}
 
 		char* client_ip = inet_ntoa(caddr.sin_addr);
+		printf("\naccepting thread: Client connected...!\n");
+		fflush(stdout);
 
-		int n = 0,tmp = 0;
-		short len,info[4];
+		int n = 0;
+		short len,info[3];
 		char buf[32]={0,};
-		
-		n = readn(csock,(char*)info[0],sizeof(short));// type
-		n = readn(csock,(char*)info[1],sizeof(short));// type2
-		n = readn(csock,(char*)info[2],sizeof(short));// start
-		n = readn(csock,(char*)info[3],sizeof(short));// end
-		n = readn(csock,(char*)len,sizeof(short));
+		n = readn(csock,(char*)&info[0],sizeof(short));// type
+		printf("accepting thread: type: %d\n",info[0]);
+		n = readn(csock,(char*)&info[1],sizeof(short));// type2
+		printf("accepting thread: type2: %d\n",info[1]);
+		n = readn(csock,(char*)&info[2],sizeof(short));// threshold
+		printf("accepting thread: threshold: %d\n",info[2]);
+		n = readn(csock,(char*)&len,sizeof(short));
 		n = readn(csock,buf,len);
-		if(n <= 0)
+		printf("accepting thread: label: %s\n\n",buf);
+
+		if(n == -1)
 		{
 			exit(1);
 		}
 		if(info[0]==CHECK && chk_cnt<CHK_DEV_NUM)
 		{
-			chk_devs[chk_cnt]=create_check(info[1],info[2],info[3],csock,buf);
-			tmp=chk_cnt;
-			pthread_create(&chk_thread[chk_cnt],NULL,listen_dev,(void*)tmp);
+			chk_devs[chk_cnt]=create_check(info[1],info[2],csock,buf);
+			pthread_create(&chk_thread[chk_cnt],NULL,listen_dev,(void*)chk_devs[chk_cnt]);
 			chk_cnt++;
-
-			printf("chk dev accepted!\n");
-			fflush(stdout);
 		}
 		else if(info[1]==CONTROL && con_cnt<CON_DEV_NUM)
 		{
 			con_devs[con_cnt]=create_control(csock,buf);
 			con_cnt++;
-
-			printf("con dev accepted!\n");
-			fflush(stdout);
 		}
 		else 
 		{
@@ -117,6 +117,7 @@ void *accept_dev(void *data)
 		}
 	}
 }
+
 
 int readn(int fd,char* buf,int len)
 {

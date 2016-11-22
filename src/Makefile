@@ -1,7 +1,7 @@
 all: run
 
 run: libfoo.a
-	gcc main.c -lfoo -L. -lpthread
+	gcc main.c -o main -lfoo -L. -lpthread
 
 libfoo.a: device.o rule.o
 	ar r libfoo.a device.o rule.o
