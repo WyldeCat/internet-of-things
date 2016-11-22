@@ -57,11 +57,12 @@ void clear_checked_trigger(struct check_device *dev)
 	// Not implemented.
 }
 
-struct control_device *create_control(int _csock,char *_label)
+struct control_device *create_control(int _csock,int _status,char *_label)
 {
 	struct control_device *tmp = malloc(sizeof(struct control_device));
 	tmp->csock = _csock;
 	tmp->label = _label;
+	tmp->status = _status;
 	return tmp;
 }
 void control(struct control_device *dev,int command)

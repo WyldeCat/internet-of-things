@@ -11,12 +11,11 @@ struct rule
 	struct control_device *con_dev;
 	struct check_device *chk_dev;
 
-	int type,command;
+	int type,type2,command;
 	int hour,minute;
-	double threshold;
+	float threshold;
 };
-
-struct rule *create_rule(int type,int command,int hour,int minute,double threshold,struct control_device *_con_dev,struct check_device *_chk_dev);
+struct rule *create_rule(int _type,int _type2,int _command,int _hour,int _minute,float _threshold,struct control_device *_con_dev,struct check_device *_chk_dev);
 bool check_rule(struct rule *r);
 
 #endif

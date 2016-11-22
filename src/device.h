@@ -29,11 +29,11 @@ void clear_trigger(struct check_device *dev);
 struct control_device
 {
 	char *label;
-	int csock;
+	int csock,status;
 	// How about read control number and it's label?
 };
 
-struct control_device *create_control(int _csock,char *_label);
+struct control_device *create_control(int _csock,int _status,char *_label);
 void control(struct control_device *dev,int command);
 
 #endif

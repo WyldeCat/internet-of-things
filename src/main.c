@@ -16,7 +16,7 @@ struct rule *rules[RULE_NUM];
 
 void *accept_dev(void *data);
 
-void load_test_rule(); // test
+void load_sample_rule(); // test
 int readn(int fd,char *buf,int len);
 int chk_cnt,con_cnt,rule_cnt;
 
@@ -27,6 +27,25 @@ int main( )
 	pthread_t thread_listen;
 	pthread_create(&thread_listen,NULL,accept_dev,NULL);
 	
+	while(chk_cnt==0 || con_cnt==0);
+	
+	load_sample_rule();
+	
+	while(1)
+	{
+		for(i=0;i<rule_cnt;i++)
+		{
+			if(check_rule(rules[i])==true)
+			{
+				short command;
+				if(rules[i]->command == COMMAND_ON) command=1;
+				else if(rules[i]->command == COMMAND_OFF) command=0;
+				else command = (rules[i]->con_dev->status == 0) ? 1 : 0;
+
+				write(rules[i]->con_dev->csock,&command,sizeof(command));
+			}
+		}
+	}
 	pthread_join(thread_listen,(void **)&ret);
 	return 0;
 }
@@ -105,9 +124,9 @@ void *accept_dev(void *data)
 			pthread_create(&chk_thread[chk_cnt],NULL,listen_dev,(void*)chk_devs[chk_cnt]);
 			chk_cnt++;
 		}
-		else if(info[1]==CONTROL && con_cnt<CON_DEV_NUM)
+		else if(info[0]==CONTROL && con_cnt<CON_DEV_NUM)
 		{
-			con_devs[con_cnt]=create_control(csock,buf);
+			con_devs[con_cnt]=create_control(csock,info[1],buf);
 			con_cnt++;
 		}
 		else 
@@ -141,7 +160,9 @@ int readn(int fd,char* buf,int len)
 	}
 }
 
-void load_test_rule()
+void load_sample_rule()
 {
-
+	rules[0]=create_rule(INTERACTIVE_RULE,MORE_THAN,COMMAND_ON,0,0,5.0,con_devs[0],chk_devs[0]);
+	rules[1]=create_rule(INTERACTIVE_RULE,LESS_THAN,COMMAND_OFF,0,0,5.0,con_devs[0],chk_devs[0]);
+	rule_cnt=2;
 }

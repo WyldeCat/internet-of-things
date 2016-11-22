@@ -20,6 +20,13 @@ typedef enum { false,true } bool;
 #define TRIGGER_RULE 1001
 #define INTERACTIVE_RULE 1002
 
+#define MORE_THAN 2000
+#define LESS_THAN 2001
+#define EQUAL 2002
+
+#define COMMAND_ON 10000
+#define COMMAND_OFF 10001
+#define COMMAND_CONVERT 10002
 
 /* NUM */
 #define CON_DEV_NUM 10
