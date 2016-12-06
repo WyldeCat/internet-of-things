@@ -1,0 +1,18 @@
+extends layout
+
+
+block content
+
+  #authentication
+    h1 Authentication
+    form(id="do-authentication", method="post")
+      input(type="text", placeholder = "your id", name="id")
+      | <br><br>
+      input(type="password", placeholder = "your password", name="pswd")
+      | <br><br>
+      input(type="submit", value="start")
+  br
+
+  #contents
+    h1 Contents
+    p may be some content
