@@ -12,13 +12,30 @@ var users = require('./routes/users');
 
 var app = express();
 
-// checking Authentication every time
 
+// for web server
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+http.listen(4000);
+
+io.on('connection',function(socket) {
+  console.log('client connected..!');
+  socket.on('updateReq',function(tmp){
+    // console.log('client required!');
+    // send random Integer as reply
+    var val = parseInt(Math.random() * 100);
+    io.sockets.connected[socket.id].emit('updateRep',val);
+  });
+});
+
+
+// checking Authentication every time
 function checkAuth(req,res,next) {
   console.log('checkAuth' + req.url);
 
   // if url is /secure.. authentication need to be checked
-  if(req.url == '/secure' && (!req.session || !req.session.authenticated)) {
+  if( (req.url == '/secure') && (!req.session || !req.session.authenticated)) {
     //render error message
     res.send('<h1>Not authenticated</h1>');
   }
@@ -47,7 +64,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/secure', secure);
 app.use('/users', users);
-
 
 
 // catch 404 and forward to error handler

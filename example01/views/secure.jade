@@ -1,4 +1,21 @@
 extends layout
 
 block content
-  p hihihi
+
+  script(src = '/socket.io/socket.io.js')
+  script(type = 'text/javascript').
+    var socket = io();
+  script(type = 'text/javascript').
+    function update() {
+      socket.emit('updateReq','');
+      var t = setTimeout(update,500);
+    }
+    socket.on('updateRep',function(val){
+      document.getElementById('val').innerHTML = val;
+    });
+
+  head
+    h1 Secret page... @_@
+
+  body(onload = "update()")
+    div(id = "val",style="font-size:30px")
