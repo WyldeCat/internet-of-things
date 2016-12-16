@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -11,6 +12,19 @@ var users = require('./routes/users');
 
 var app = express();
 
+// checking Authentication every time
+
+function checkAuth(req,res,next) {
+  console.log('checkAuth' + req.url);
+
+  // if url is /secure.. authentication need to be checked
+  if(req.url == '/secure' && (!req.session || !req.session.authenticated)) {
+    //render error message
+    res.send('<h1>Not authenticated</h1>');
+  }
+  next();
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -21,6 +35,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(session({
+ secret : 'abc123'
+}));
+// set checkAuth function for ...
+app.use(checkAuth);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
