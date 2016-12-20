@@ -12,24 +12,6 @@ var users = require('./routes/users');
 
 var app = express();
 
-// for udp server
-var port = 4001;
-var host = '127.0.0.1';
-
-var dgram = require('dgram');
-var udp = dgram.createSocket('udp4');
-
-udp.on('listening',function() {
-  var addr = udp.address();
-  console.log('UDP Server listening on..');
-});
-
-udp.on('message',function(message, remote) {
-  console.log(remote.address + ':' + remote.port + ' - ' + message);
-});
-
-udp.bind(port,host);
-
 // for web server
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -38,13 +20,24 @@ http.listen(4000);
 
 io.on('connection',function(socket) {
   console.log('client connected..!');
-  socket.on('updateReq',function(tmp){
-    // console.log('client required!');
-    // send random Integer as reply
-    var val = parseInt(Math.random() * 100);
-    io.sockets.connected[socket.id].emit('updateRep',val);
-  });
 });
+
+// for udp server
+var port = 4001;
+var host = '127.0.0.1';
+var dgram = require('dgram');
+var udp = dgram.createSocket('udp4');
+
+udp.on('listening',function() {
+  var addr = udp.address();
+  console.log('UDP Server listening on..');
+});
+udp.on('message',function(message, remote) {
+  // send to all web browser
+  io.sockets.emit('update',String(message));
+});
+
+udp.bind(port,host);
 
 
 // checking Authentication every time
@@ -71,7 +64,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(session({
- secret : 'abc123'
+ secret : 'abc123',
+ authenticated : false
 }));
 // set checkAuth function for ...
 app.use(checkAuth);

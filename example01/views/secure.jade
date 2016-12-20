@@ -6,16 +6,23 @@ block content
   script(type = 'text/javascript').
     var socket = io();
   script(type = 'text/javascript').
-    function update() {
-      socket.emit('updateReq','');
-      var t = setTimeout(update,500);
-    }
-    socket.on('updateRep',function(val){
-      document.getElementById('val').innerHTML = val;
+    socket.on('update',function(value){
+      var item = document.getElementById('list'+value[0]);
+      item.innerHTML = value[0] + ' : ' + value.substring(1,2);
     });
 
   head
     h1 Secret page... @_@
 
-  body(onload = "update()")
-    div(id = "val",style="font-size:30px")
+  body
+    ul(id = "list",style = "font-size:30px") Here's the list
+      li(id = "list0") 0 : no value
+      li(id = "list1") 1 : no value
+      li(id = "list2") 2 : no value
+      li(id = "list3") 3 : no value
+      li(id = "list4") 4 : no value
+      li(id = "list5") 5 : no value
+      li(id = "list6") 6 : no value
+      li(id = "list7") 7 : no value
+      li(id = "list8") 8 : no value
+      li(id = "list9") 9 : no value

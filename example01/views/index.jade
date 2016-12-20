@@ -4,13 +4,14 @@ extends layout
 block content
 
   #authentication
-    h1 Authentication
-    form(id="do-authentication", method="post", action = '/do-authentication')
-      input(type="text", placeholder = "your id", name="id")
-      | <br><br>
-      input(type="password", placeholder = "your password", name="pswd")
-      | <br><br>
-      input(type="submit", value="start")
+    - if (!isAuthenticated)
+      h1 Authentication
+      form(id="do-authentication", method="post", action = '/do-authentication')
+        input(type="text", placeholder = "your id", name="id")
+        | <br><br>
+        input(type="password", placeholder = "your password", name="pswd")
+        | <br><br>
+        input(type="submit", value="sign in")
   br
 
   #contents

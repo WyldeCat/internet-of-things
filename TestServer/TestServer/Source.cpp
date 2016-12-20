@@ -35,7 +35,8 @@ int main()
 	while (1)
 	{
 		int ret;
-		char *test = "Hello world!";
+		int val = rand() % 100;
+		char test[3] = { '0' + val / 10,'0' + val % 10 ,0};
 		
 		// need to think about protocol..
 
@@ -47,7 +48,7 @@ int main()
 			exit(1);
 		}
 
-		Sleep(1000);
+		Sleep(10);
 	}
 	return 0;
 }

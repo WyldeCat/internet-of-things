@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Expression' });
+  var sess = req.session;
+  res.render('index', { title : 'Expression', isAuthenticated : sess.authenticated });
 });
 
 router.post('/do-authentication',function(req,res,next){

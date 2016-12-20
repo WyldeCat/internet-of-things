@@ -1,2 +1,6 @@
-﻿  TestServer.vcxproj -> C:\workspace\my-home-network\TestServer\Debug\TestServer.exe
+﻿  Source.cpp
+c:\workspace\my-home-network\testserver\testserver\source.cpp(39): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+c:\workspace\my-home-network\testserver\testserver\source.cpp(9): warning C4101: 'data0': unreferenced local variable
+c:\workspace\my-home-network\testserver\testserver\source.cpp(9): warning C4101: 'data1': unreferenced local variable
+  TestServer.vcxproj -> C:\workspace\my-home-network\TestServer\Debug\TestServer.exe
   TestServer.vcxproj -> C:\workspace\my-home-network\TestServer\Debug\TestServer.pdb (Full PDB)
